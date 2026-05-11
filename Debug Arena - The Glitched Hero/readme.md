@@ -84,14 +84,49 @@ Bir bölüm tamamlandığında oyuncu XP sınırını aşar ve seviye (level) at
 ## 🛠️ ÇÖZÜLEN HATALAR FORMU
 > *Lütfen bulduğunuz ve düzelttiğiniz hataları aşağıdaki şablona uygun olarak ekleyiniz.*
 
-### 1- [Hataya Verdiğiniz İsim / Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** `game/game.py` (Örn: L30 - L47)
-* **Hatanın Sebebi:** (Bu hata neden kaynaklanıyordu? Sistemde neyi bozuyordu? Kısaca açıklayınız.)
-* **Nasıl Çözdünüz:** (Kodda nereyi veya hangi mantığı değiştirdiğinizi kısaca yazınız.)
+### 1- Eksik Sözdizimi Karakteri (Missing Colon)
+* **Dosya Adı ve Satır Aralığı:** `battle.py` (L94)
+* **Hatanın Sebebi:** def enemy_turn(self, damage_multiplier=1) satırının sonunda : (iki nokta üst üste) eksik. Python'da fonksiyon, döngü ve koşul bloklarının başlangıcında bu karakterin bulunması zorunludur. Aksi halde SyntaxError oluşur.
+* **Nasıl Çözdünüz:** Fonksiyon imzasının sonuna : karakteri eklenerek blok başlatıldı.
 
 ---
 
-### 2- [Hatanın Konusu]
+### 2-Kapatılmamış Parantez Hatası (Unclosed Parenthesis)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L78-L80)
+* **Hatanın Sebebi:** print( fonksiyonu açılmış ancak kapanış parantezi ) yazılmamıştı. Bu durum Python’da syntax hatasına neden oluyordu.Python, parantez kapanana kadar kodun devam ettiğini sanır.
+* **Nasıl Çözdünüz:** 78. satır ve çevresindeki tüm parantez aç-kapat eşleşmeleri kontrol edilerek eksik olan ) karakteri eklendi.
+
+---
+
+### 3-Tamamlanmamış Karakter Dizisi (Unterminated String Literal)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L78-L80)
+* **Hatanın Sebebi:** f-string içerisinde açılan çift tırnak (") kapatılmadığı için Python string yapısını tamamlayamıyordu.Oyun arayüzü karakter bilgilerini basmaya çalıştığı anda sistem donar ve kapanır.
+* **Nasıl Çözdünüz:** f-string ifadesinin sonuna eksik olan " işareti eklenerek metin bloğu sonlandırıldı.
+
+---
+
+### 4-Komut Ayırma Hatası (Statements Separation Error)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L78-L80)
+* **Hatanın Sebebi:** Bir önceki hatadan (tırnağın kapanmaması) dolayı Python, 80. satırı  birbirine girmiş tek bir bozuk komut gibi algılıyor.Kod hiyerarşisi bozulduğu için Character sınıfı düzgün yüklenemez ve oyun daha başlatılamadan durur.
+* **Nasıl Çözdünüz:** Satır sonuna tırnak ve parantez kapatma ") eklenerek her bir komutun kendi satırında bağımsız çalışması sağlandı.
+
+---
+
+### 5- Geçersiz Parametre Tanımı (Ellipsis Syntax Error)
+* **Dosya Adı ve Satır Aralığı:** 'enemy.py' (L6)
+* **Hatanın Sebebi:** __init__ fonksiyonu içerisinde parametre listesi yerine üç nokta (...) kullanılmış.Bu hata, düşman nesnesinin (Object) oluşturulmasını tamamen engeller. Oyun bir düşmanla karşılaşmaya çalıştığı anda "SyntaxError" vererek kapanır.
+* **Nasıl Çözdünüz:** ... yerine self, name, hp, damage, xp_reward parametreleri eklenerek fonksiyon imzası geçerli hale getirildi.
+
+---
+
+### 6- Sözlük (Dictionary) İçinde Eksik Virgüller
+* **Dosya Adı ve Satır Aralığı:** 'item.py' (L37-L42)
+* **Hatanın Sebebi:** type_labels isimli sözlük (dictionary) tanımlanırken her bir anahtar-değer çiftinin arasına virgül (,) konulmamış.Envanterinizi açmaya çalıştığınızda veya bir eşyanın ismini ekranda görmek istediğinizde oyun anında çöker.
+* **Nasıl Çözdünüz:** Her satırın sonuna virgül eklenerek sözlük yapısı düzeltilir.
+
+---
+
+### 3- [Hatanın Konusu]
 * **Dosya Adı ve Satır Aralığı:** 
 * **Hatanın Sebebi:** 
 * **Nasıl Çözdünüz:** 
@@ -103,7 +138,26 @@ Bir bölüm tamamlandığında oyuncu XP sınırını aşar ve seviye (level) at
 * **Hatanın Sebebi:** 
 * **Nasıl Çözdünüz:** 
 
-*(Not: Bu listeyi aşağıya doğru dilediğiniz kadar uzatabilirsiniz.)*
+---
+
+### 3- [Hatanın Konusu]
+* **Dosya Adı ve Satır Aralığı:** 
+* **Hatanın Sebebi:** 
+* **Nasıl Çözdünüz:** 
+
+---
+
+### 3- [Hatanın Konusu]
+* **Dosya Adı ve Satır Aralığı:** 
+* **Hatanın Sebebi:** 
+* **Nasıl Çözdünüz:** 
+
+---
+
+### 3- [Hatanın Konusu]
+* **Dosya Adı ve Satır Aralığı:** 
+* **Hatanın Sebebi:** 
+* **Nasıl Çözdünüz:** 
 
 ---
 
