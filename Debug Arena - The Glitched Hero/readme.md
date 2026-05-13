@@ -87,54 +87,54 @@
 
 ---
 
-### 3- [Hatanın Konusu]
+### 13- Stun Mekaniği Entegrasyonu
 * **Dosya Adı ve Satır Aralığı:** 'item.py' (L28-L31)
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+* **Hatanın Sebebi:** Eşya türleri arasında tanımlı olan "stun" (felç) etkisi için ayrılan kod bloğu boş bırakıldığı (pass) için, oyuncu bu eşyayı kullandığında düşman üzerinde hiçbir kontrol etkisi (Crowd Control) oluşmuyordu. Bu durum oyunun strateji derinliğini eksiltiyordu.
+* **Nasıl Çözdünüz:** stun bloğu içerisine, parametre olarak gelen enemy nesnesinin felç durumunu (is_stunned) aktif hale getiren mantıksal atama yapıldı. Böylece eşya kullanıldığında düşmanın bir tur boyunca işlem yapamaz hale gelmesi sağlandı ve kullanıcıya bilgilendirme mesajı eklendi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 14- Envanter Kapasite Genişletme Mekanizması
+* **Dosya Adı ve Satır Aralığı:** 'inventory.py'
+* **Hatanın Sebebi:** Seviye atlama gibi durumlarda ödül olarak verilmesi planlanan envanter genişletme özelliği (expand_slot) boş bırakıldığı (pass) için oyuncu gelişse bile eşya taşıma sınırı başlangıç değerinde takılı kalıyordu.
+* **Nasıl Çözdünüz:** expand_slot metodu içerisinde self.max_slots değişkeni bir birim artırılacak şekilde güncellendi. Bu sayede karakterin gelişimine paralel olarak envanter kapasitesinin de dinamik olarak artırılmasına olanak sağlayan altyapı oluşturuldu.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 15- Kaçılan Düşmanların Sağlık Durumu Senkronizasyonu
+* **Dosya Adı ve Satır Aralığı:** 'game.py'
+* **Hatanın Sebebi:** Oyuncu savaştan kaçtığında, enemy.current_hp = enemy.max_hp ataması yapıldığı için düşmanın canı tamamen doluyordu. Bu durum, oyuncunun verdiği hasarın boşa gitmesine ve "takip edilme" mekaniğinin adaletsizleşmesine neden oluyordu.
+* **Nasıl Çözdünüz:** Düşmanın canını tam kapasiteye eşitleyen kod satırı kaldırıldı.Düşman objesi mevcut current_hp değeriyle fled_enemies kuyruğuna eklendi; böylece tekrar karşılaşıldığında hasar almış haliyle dönmesi sağlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 16- Modüler Sınıf Etkileşimleri ve İçe Aktarma Yönetimi
+* **Dosya Adı ve Satır Aralığı:** 'game.py' 
+* **Hatanın Sebebi:** Oyunun ana döngüsünü yöneten Game sınıfı; Character, Enemy ve Battle gibi diğer temel sınıflara ihtiyaç duyuyordu. Gerekli içe aktarma (import) işlemleri tamamlanmadığı için sistem bu sınıfları tanıyamıyor ve "NameError" vererek başlatılamıyordu.
+* **Nasıl Çözdünüz:** character, enemy, battle ve data modüllerinden ilgili sınıflar ve veri yapıları (CHAPTERS) from .modül_adı import Sınıf yapısı kullanılarak projeye dahil edildi. Bu sayede sınıflar arası iletişim sağlanarak oyunun modüler yapısı işlevsel hale getirildi.
 
 ---
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 17- Stun (Felç) Durumunu Sıfırlama
+* **Dosya Adı ve Satır Aralığı:** 'enemy.py'
+* **Hatanın Sebebi:** Düşman bir kez felç (stunned) edildiğinde, bu durumu normale döndürecek bir mantık bulunmadığı için oyunun geri kalanı boyunca saldıramaz halde kalıyordu. Bu durum, stratejik bir avantajı oyunun dengesini bozan bir hataya dönüştürüyordu.
+* **Nasıl Çözdünüz:** attack metodu içerisinde, düşman felç etkisinden dolayı sıfır hasar döndürdüğü turda self.stunned değişkeni tekrar False yapılacak şekilde güncellendi. Böylece felç etkisinin sadece bir tur sürmesi sağlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 18- Dinamik ve Değişken Düşman Hasar Hesaplaması
+* **Dosya Adı ve Satır Aralığı:** 'enemy.py'
+* **Hatanın Sebebi:** Saldırı fonksiyonu varsayılan olarak sabit 0 değerini döndürdüğü için düşmanlar oyuncuya hasar veremiyordu. Ayrıca hasarın hep aynı kalması oyunun strateji ve zorluk katmanını zayıflatıyordu.
+* **Nasıl Çözdünüz:** random.randint(-1, 3) fonksiyonu kullanılarak düşmanın temel hasarına rastgele bir sapma eklendi. Hesaplanan değerin negatif çıkma ihtimaline karşı max(0, ...) kontrolü eklenerek düşmanın oyuncuyu yanlışlıkla iyileştirmesi engellendi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 19- Düşman Yaşam Döngüsü ve Ölüm Kontrolü
+* **Dosya Adı ve Satır Aralığı:** 'enemy.py'
+* **Hatanın Sebebi:** is_alive fonksiyonu her zaman True döndürdüğü için düşmanın canı sıfıra inse bile ölü kabul edilmiyordu. Bu durum, bitmeyen savaş döngülerine ve oyunun ilerleyememesine neden oluyordu.
+* **Nasıl Çözdünüz:** Fonksiyon, sabit True yerine self.current_hp > 0 mantıksal ifadesini döndürecek şekilde revize edildi. Böylece canı tükenen düşmanın sistem tarafından doğru şekilde "ölü" olarak algılanması sağlandı.
 
 ---
 
