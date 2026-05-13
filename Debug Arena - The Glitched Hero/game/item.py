@@ -35,10 +35,10 @@ class Item:
 
     def __str__(self):
         type_labels = {
-            "heal": "İyileşme"
-            "attack_boost": "Saldırı Güçlendirme"
-            "shield": "Kalkan"
+            "heal": "İyileşme",
+            "attack_boost": "Saldırı Güçlendirme",
+            "shield": "Kalkan",
             "stun": "Felç"
-        }
+            }
         label = type_labels.get(self.item_type, self.item_type)
         return f"{self.name}  [{label}]  (x{self.uses})"

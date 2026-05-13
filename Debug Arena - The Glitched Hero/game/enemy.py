@@ -3,7 +3,7 @@ import random
 
 class Enemy:
     # TODO: Nesne başlatıcı (constructor) içindeki eksik parametreleri tanımla
-    def __init__( ... ,level=1):
+    def __init__(self, name, hp, damage, xp_reward ,level=1):
         self.name = name
         self.level = level
         self.max_hp = hp

@@ -29,7 +29,7 @@ class Battle:
                     self.enemy_turn()
 
         return self.end_battle()
-
+while True:
     def player_turn(self):
         print(f"\n  --- Senin Turun (Tur {self.turn_count}) ---")
         print("  1. Saldır")
@@ -37,11 +37,11 @@ class Battle:
         print("  3. Envanter")
         print("  4. Kaç")
 
-        while True:
-            choice = input("  Seçim yap (1-4): ").strip()
-            if choice in ["1", "2", "3", "4"]:
+       
+        choice = input("  Seçim yap (1-4): ").strip()
+        if choice in ["1", "2", "3", "4"]:
                 break
-            print("  Geçersiz seçim!")
+        print("  Geçersiz seçim!")
 
         if choice == "1":
             damage = self.player.attack()
@@ -58,7 +58,7 @@ class Battle:
             inv_result = self.use_inventory()
             if inv_result == "no_items":
                 print("  Envanterde kullanılabilir item yok!")
-            return "continue" # TODO: Oyuncu envanteri açıp bir işlem yaptıktan sonra, sırasını kaybetmeden hamle seçimine geri dönmesini sağla.
+            continue    #envanter kullanımı sonrası tekrar seçim yapabilmesi için döngüye devam et
         
         elif choice == "4":
             if random.random() < 0.5:
@@ -91,7 +91,7 @@ class Battle:
                         return "used"
             print("  Geçersiz seçim!")
 
-    def enemy_turn(self, damage_multiplier=1)  
+    def enemy_turn(self, damage_multiplier=1):
         damage = self.enemy.attack()
         if damage == 0:
             return
