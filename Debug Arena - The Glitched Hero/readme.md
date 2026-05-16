@@ -251,26 +251,24 @@
 
 ---
 
-### 3- Maksimum Sağlık Durumunda Eşya Tüketim İhlali
+### 36- Maksimum Sağlık Durumunda Eşya Tüketim İhlali
 * **Dosya Adı ve Satır Aralığı:** 'item.py'
 * **Hatanın Sebebi:** Karakterin canı tamamen doluyken bile "İksir" eşyası kullanılabiliyor ve oyuncuya hiçbir fayda sağlamadan eşya hakkı düşüyordu. Bu durum kılavuzdaki koruma kurallarına aykırıydı.
 * **Nasıl Çözdünüz:** Fonksiyonun başına character.current_hp >= character.max_hp kontrolü eklenerek, canı dolu olan oyuncunun eşyayı tüketmesi engellendi ve hamle iptal edilerek eşya korunmuş oldu.
 
 ---
 
----
-
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 37- Düşman Hasar Alma Mekanizmasında Hatalı Veri Dönüşü ve Değişken Çakışması
+* **Dosya Adı ve Satır Aralığı:** 'baattle.py & enemy.py'
+* **Hatanın Sebebi:** Enemy sınıfındaki take_damage metodu, düşmanın aldığı gerçek hasarı hesaplamak yerine fonksiyona giren ham damage parametresini doğrudan return ediyordu. Savaş motoru bu değeri okumaya çalışırken, savunma turlarında yerel değişken kapsamları (local scope) çakışıyor ve sistem UnboundLocalError vererek çöküyordu.
+* **Nasıl Çözdünüz:** enemy.py içindeki metot gerçek azalan canı (actual_damage) dönecek şekilde düzeltildi. battle.py içindeki değişken ismi ise enemy_damage olarak izole edilerek isim çakışması tamamen ortadan kaldırıldı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 38- Düşman Hasar Alma Mekanizmasındaki Hatalı Veri Dönüşü
+* **Dosya Adı ve Satır Aralığı:** 'enemy.py'
+* **Hatanın Sebebi:** Metot, düşmanın canından eksilen gerçek hasarı dönmek yerine fonksiyona giren ham damage parametresini doğrudan return ediyordu. Bu durum, özellikle oyuncunun savunma yaptığı veya hasarın sıfırlandığı turlarda ana döngüdeki değişken durumlarıyla çakışarak UnboundLocalError tetikliyordu.
+* **Nasıl Çözdünüz:** Metot, düşmanın azalan anlık can puanını hesaplayacak şekilde (actual_damage = old_hp - self.current_hp) revize edildi. Geriye ham parametre yerine hafızadaki gerçek hasar verisi döndürülerek veri tutarlılığı sağlandı.
 
 ---
 
