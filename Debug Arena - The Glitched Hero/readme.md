@@ -195,68 +195,66 @@
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 28- Geçerli Girdi Kontrolünde Erken Döngü Kırılması
+* **Dosya Adı ve Satır Aralığı:** battle.py
+* **Hatanın Sebebi:** Kullanıcı geçerli bir menü numarası (1-4) girdiğinde, kod eylemleri gerçekleştirmeden önce break komutu ile döngüyü kırıyordu. Bu yüzden if/elif bloklarındaki asıl mekanikler (Saldır, Savun) bypass ediliyor ve oyuncu hiçbir şey yapamadan tur sırası düşmana geçiyordu.
+* **Nasıl Çözdünüz:** Erken break yapısı kaldırıldı. Girdinin doğruluğu sağlandıktan sonra, eylemlerin (Saldırı ve Savunma) tamamlanmasının ardından döngünün kırılması (break) sağlandı. Envanter seçeneğinde ise sıranın kaybolmaması için continue akışı korundu.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 29- Sonsuz Eşya Kullanımı ve Sınırsız Tur Avantajı Açığı
+* **Dosya Adı ve Satır Aralığı:** 'battle.py'
+* **Hatanın Sebebi:** Oyuncu envanterden başarıyla bir eşya (örneğin İksir) tükettiğinde bile kod continue ile turun başına sarıyordu. Bu durum oyuncunun tek bir tur içinde sınırsız kez can doldurabilmesine sebep olarak oyun dengesini bozuyordu.
+* **Nasıl Çözdünüz:** use_inventory() fonksiyonundan gelen yanıtlar ayrıştırıldı. Başarılı eşya kullanımı durumunda ("used"), tur hakkının tamamlanması için döngünün break ile kırılması sağlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 30- Düşman Felç (Stun) Durumunun Savaş Motorunda İşlenmemesi
+* **Dosya Adı ve Satır Aralığı:** 'battle.py'
+* **Hatanın Sebebi:** Eşya sisteminde düşmanı felç etme mekaniği kurulmuş olmasına rağmen, ana savaş döngüsünde düşmanın felç durumu kontrol edilmiyordu. Düşman felç edilmiş olsa bile saldırmaya devam ediyordu.
+* **Nasıl Çözdünüz:** Savaş döngüsüne düşmanın stunned bayrağını denetleyen bir kontrol mekanizması eklendi. Felç durumunda düşman turu hasarsız atlatılarak bayrak sıfırlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 31- Demir Kalkan Hasar Sönümleme ve Erken Sıfırlanma Açığı
+* **Dosya Adı ve Satır Aralığı:** 'character.py'
+* **Hatanın Sebebi:** Karakter aktif bir kalkana sahipken hasar aldığında, kalkanın canı gelen hasardan büyük olsa bile self.temp_shield = 0 komutuyla tek vuruşta tamamen yok oluyordu. Bu durum kalkanın ömrünü haksız yere bitiriyordu.
+* **Nasıl Çözdünüz:** Kalkan sönümleme matematiği revize edildi. Kalkan gücü doğrudan 0 yapılmak yerine, bloklanan hasar miktarı kadar eksiltilecek (self.temp_shield -= blocked) şekilde güncellendi.
 
 ---
 
----
-
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 32- Hasar Hesaplama Algoritmasında Öncelik ve Sıralama Hatası
+* **Dosya Adı ve Satır Aralığı:** 'character.py'
+* **Hatanın Sebebi:** Karakter aynı turda hem savunma pozisyonu alıp hem Demir Kalkan kullandığında, kalkan sönümleme hesabı savunma azaltmasından önce yapılıyordu. Bu durum kalkanın ham hasara maruz kalarak erkenden kırılmasına ve oyun dengesinin bozulmasına yol açıyordu.
+* **Nasıl Çözdünüz:** take_damage fonksiyonundaki işlem sırası revize edildi. Önce is_defending kontrolüyle gelen hasar yarıya düşürüldü, ardından süzülen net hasar kalkan havuzuna gönderilerek kılavuzdaki matematiksel model sağlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 33- Uyuşturma Ruhu Eşyasının Geçersiz Taban Değeri Verisi
+* **Dosya Adı ve Satır Aralığı:** 'data.py'
+* **Hatanın Sebebi:** Seviye 5 ödülü olan "Uyuşturma Ruhu" (Stun etkisi) eşyasının value alanı 0 olarak girilmişti. Bu durum nesne tabanlı çağrılarda işlevsizlik veya beklenmeyen mantık hataları doğurabilirdi.
+* **Nasıl Çözdünüz:** İlgili eşyanın value değeri, 1 turluk felç etkisini temiz bir şekilde sembolize etmesi adına veri katmanında 1 olarak güncellendi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 34- Ardışık Kaçış Senaryolarında Arayüz Kilitlenmesi
+* **Dosya Adı ve Satır Aralığı:** 'game.py'
+* **Hatanın Sebebi:** Oyuncu bölümdeki tek bir düşmandan üst üste kaçtığında, terminal arayüzü kullanıcıya hiçbir duraklama veya taktiksel ekran vermeden anında sonsuz kez savaşı yeniden tetikliyordu. Bu durum oyunun akış hissini bozuyor ve terminali kilitliyordu.
+* **Nasıl Çözdünüz:** if result == "fled": bloğunun sonuna taktiksel bir input() bekleme satırı eklenerek döngü geçişleri kullanıcı kontrolüne bağlandı ve arayüz kilitlenmeleri engellendi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 35- Envanter Gösteriminde Veri Senkronizasyon Gecikmesi
+* **Dosya Adı ve Satır Aralığı:** 'inventory.py'
+* **Hatanın Sebebi:** Kullanım hakkı biten eşyaların listeden çıkarılmasını sağlayan remove_empty metodu sadece belirli tetiklemelerde çalışıyordu. Bu durum, oyuncunun envanteri açtığında anlık olarak tükenmiş eşyaları hâlâ görme (veri senkronizasyon gecikmesi) riskini barındırıyordu.
+* **Nasıl Çözdünüz:** show() ve has_items() fonksiyonlarının ilk satırına otomatik olarak self.remove_empty() çağrısı entegre edilerek envanter verisinin her zaman güncel ve gerçek zamanlı yansıtılması sağlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 3- Maksimum Sağlık Durumunda Eşya Tüketim İhlali
+* **Dosya Adı ve Satır Aralığı:** 'item.py'
+* **Hatanın Sebebi:** Karakterin canı tamamen doluyken bile "İksir" eşyası kullanılabiliyor ve oyuncuya hiçbir fayda sağlamadan eşya hakkı düşüyordu. Bu durum kılavuzdaki koruma kurallarına aykırıydı.
+* **Nasıl Çözdünüz:** Fonksiyonun başına character.current_hp >= character.max_hp kontrolü eklenerek, canı dolu olan oyuncunun eşyayı tüketmesi engellendi ve hamle iptal edilerek eşya korunmuş oldu.
 
 ---
 
