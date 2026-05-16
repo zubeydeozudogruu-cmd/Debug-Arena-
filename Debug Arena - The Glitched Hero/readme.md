@@ -138,63 +138,60 @@
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 20- Negatif Can (HP) Taşma Hatası
+* **Dosya Adı ve Satır Aralığı:** 'character.py' 
+* **Hatanın Sebebi:** self.current_hp -= damage satırı, karakter çok büyük bir darbe aldığında can değerinin eksilere (örneğin -15/100) düşmesine neden oluyordu. Kod patlamasa bile arayüzde kötü bir görüntü oluşturur.
+* **Nasıl Çözdünüz:** Hasar düşüldükten sonra self.current_hp = max(0, self.current_hp) kontrolü ile canın sıfırın altına inmesi engellendi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 21- Savunma Pozisyonunun Aktif Edilmemesi
+* **Dosya Adı ve Satır Aralığı:** 'character.py' 
+* **Hatanın Sebebi:** defend fonksiyonu hala sadece ekrana yazı yazdırıyor. self.is_defending değişkeni True yapılmadığı için, take_damage fonksiyonundaki %50 az hasar alma mantığı asla tetiklenmiyor. Yani karakterin savunma seçmesi hala tamamen işlevsiz.
+* **Nasıl Çözdünüz:** defend fonksiyonunun gövdesine self.is_defending = True ataması eklenerek, oyuncu savunma yaptığında bu durumun arka planda da aktifleşmesi sağlandı.
 
 ---
 
----
-
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 22- Eşya Kullanım Adedi (Uses) Azaltma Eksikliği
+* **Dosya Adı ve Satır Aralığı:** 'item.py'
+* **Hatanın Sebebi:** Eşyalar başarıyla tetiklenip etkileri karaktere aktarılmasına rağmen, nesnenin self.uses değişkeni güncellenmiyordu. Bu durum, envanterdeki tüketilebilir malzemelerin sınırsız kullanılmasına yol açarak oyun dengesini bozuyordu.
+* **Nasıl Çözdünüz:** Eşya etki bloklarının hemen çıkışına, return True ifadesinden önce self.uses -= 1 satırı eklenerek her başarılı kullanımda eşya miktarının doğru bir şekilde eksilmesi sağlandı.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 23- Kural Dışı Boş Menü Gösterim Sıralaması
+* **Dosya Adı ve Satır Aralığı:** 'battle.py'
+* **Hatanın Sebebi:** Oyun kurallarına göre "Envanterde kullanılabilir item yoksa sistem uyarı vermeli ve menüyü açmamalıdır" şartı bulunmaktadır. Fakat mevcut use_inventory fonksiyonunda önce self.player.inventory.show() çağrılarak boş envanter tablosu ekrana basılıyor, doluluk kontrolü ise bu çizimden sonra yapılıyordu. Bu durum yarışma senaryosunu doğrudan ihlal ediyordu.
+* **Nasıl Çözdünüz:** has_items() kontrol satırı fonksiyonun en başına (çanta görünümü ekrana çizilmeden öncesine) alındı. Böylece eğer çanta boşsa fonksiyon ekrana hiçbir şey basmadan anında "no_items" sinyaliyle süreci engelledi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 24- Sabit Boş Çanta Kontrolü ve Kilitlenme Sorunu
+* **Dosya Adı ve Satır Aralığı:** 'inventory.py'
+* **Hatanın Sebebi:** inventory.py içindeki has_items fonksiyonu, oyuncunun çantası tamamen boş olsa bile her koşulda statik olarak return True döndürüyordu. Savaş esnasında envanter boşken "3" tuşuna basıldığında battle.py çantada eşya olduğunu sanıyor, ancak içeride listelenecek eşya bulamadığı için ekrana boş bir tablo çizip sistemin kısır bir döngüye girmesine veya kilitlenmesine sebep oluyordu.
+* **Nasıl Çözdünüz:** return True ifadesi silindi. Yerine envanter listesinin güncel doluluk oranını dinamik olarak denetleyen ve eğer envanter boşsa doğrudan False üreten return len(self.items) > 0 mantığı kuruldu.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 25- Adaletsiz Sıra Kaybı ve Tur Döngüsü Açığı
+* **Dosya Adı ve Satır Aralığı:** 'battle.py'
+* **Hatanın Sebebi:** Orijinal oyun kurallarında "Oyuncu çantasını açıp kullandığında veya kapattığında hamle sırasını kaybetmez" emredilmektedir. Ancak mevcut kod yapısında oyuncu envanterden "0" tuşuna basıp vazgeçtiğinde ("back") veya başarıyla bir eşya kullandığında ("used"), kod bu durumları yakalayamıyordu. Bloktan çıkıp doğrudan fonksiyon sonundaki return "continue" satırına ulaştığı için oyuncu daha aksiyon alamadan tur hakkı bedavaya düşmana geçiyordu.
+* **Nasıl Çözdünüz:** elif choice == "3": (Envanter) bloğunun en sonuna, if kontrolünün dışına çıkacak şekilde bir continue komutu yerleştirildi. Böylece oyuncu envanterde ne yaparsa yapsın sırasını kaybetmeden yeniden ana savaş menüsünün (1. Saldır, 2. Savun...) başına yönlendirildi.
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 26- Başlangıç Eşya Verisinin Tanımlanmamış Olması
+* **Dosya Adı ve Satır Aralığı:** 'data.py'
+* **Hatanın Sebebi:** Kılavuzda oyuncunun oyuna 2 kullanımlık temel İksir (+30 HP) ile başlaması gerektiği emredilmiştir. Ancak dosyada sadece 2-5 seviye arası ödüller tanımlanmış, başlangıç eşyasının şablonu unutulmuştur. Bu durum envanterin boş kalmasına veya karakter oluşturulurken sistemin çökmesine sebep oluyordu.
+* **Nasıl Çözdünüz:** Dosyaya adı "İksir", tipi "heal", değeri 30 ve kullanım hakkı 2 olan STARTING_ITEMS listesi eklenerek başlangıç veri modeli kılavuza uygun hale getirildi.
 
 ---
 
----
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 27- Geçerli Girdi Kontrolünde Erken Döngü Kırılması
+* **Dosya Adı ve Satır Aralığı:** 'battle.py'
+* **Hatanın Sebebi:** Kullanıcı geçerli bir menü numarası (1-4) girdiğinde, kod eylemleri gerçekleştirmeden önce break komutu ile döngüyü kırıyordu. Bu yüzden if/elif bloklarındaki asıl mekanikler (Saldır, Savun) bypass ediliyor ve oyuncu hiçbir şey yapamadan tur sırası düşmana geçiyordu.
+* **Nasıl Çözdünüz:** Erken break yapısı kaldırıldı. Girdinin doğruluğu sağlandıktan sonra, eylemlerin (Saldırı ve Savunma) tamamlanmasının ardından döngünün kırılması (break) sağlandı. Envanter seçeneğinde ise sıranın kaybolmaması için continue akışı korundu.
 
 ---
 
