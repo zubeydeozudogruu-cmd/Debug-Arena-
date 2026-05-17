@@ -283,9 +283,13 @@ Bonus Özellik 1: Çevresel Element Avantajı (Environmental Stage Passive Syste
 Nasıl Çalışıyor: Oyundaki statik ilerleyiş yapısını kırmak ve taktiksel derinlik katmak amacıyla harita tabanlı pasif çevre mekanikleri entegre edilmiştir. Savaş motoru (Battle), başlatıldığı haritanın string verisini (stage_name) analiz ederek oyuncuya o bölgeye özgü şu dinamik avantajları sağlar:
 
 Bölüm 1 (Karanlık Orman): Yoğun bitki örtüsü ve gölgeler sayesinde Savun eylemi gelen düşman hasarını standart %50 yerine %65 oranında sönümler (Oyuncu sadece %35 hasar alır).
+
 Bölüm 2 (Karanlık Mağara): Dar alandaki akustik yankı etkisiyle, oyuncunun saldırı esnasında çıkardığı rastgele bonus hasar zarı 2 kat efektif vurur.
+
 Bölüm 3 (Zehirli Bataklık): Ortamdaki asidik gazların etkisiyle oyuncunun her normal saldırısına +2 ekstra zehir hasarı kalıcı olarak eklenir.
+
 Bölüm 4 (Lanetli Kale): Kalenin antik savunma büyüleri sayesinde oyuncu savaşa doğrudan +3 Geçici Kalkan (temp_shield) elde ederek başlar ve ilk darbeleri canı gitmeden absorbe eder.
+
 Bölüm 5 (Karanlık Kule): Final kulesinin yoğun büyü akımı, oyuncunun vuruşlarına +4 ekstra kaos hasarı ekleyerek hasar sınırlarını zorlar.
 
 Dosya ve Konum Bilgisi:
