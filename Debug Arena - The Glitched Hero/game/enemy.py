@@ -2,7 +2,6 @@
 import random
 
 class Enemy:
-    # TODO: Nesne başlatıcı (constructor) içindeki eksik parametreleri tanımla
     def __init__(self, name, hp, damage, xp_reward ,level=1):
         self.name = name
         self.level = level
@@ -32,7 +31,6 @@ class Enemy:
         actual_damage = old_hp - self.current_hp
         return actual_damage  # Geriye ham hasarı değil, gerçekte azalan canı döndürüyoruz.
 
-    # TODO: Düşmanın mevcut can puanını (current_hp) kontrol ederek canlılığını belirle. Eğer can puanı 0'a eşit veya düşükse düşman ölü olarak kabul edilmeli.
     def is_alive(self):
         return self.current_hp > 0 
 
