@@ -4,28 +4,28 @@
 > *Lütfen bulduğunuz ve düzelttiğiniz hataları aşağıdaki şablona uygun olarak ekleyiniz.*
 
 ### 1- Eksik Sözdizimi Karakteri (Missing Colon)
-* **Dosya Adı ve Satır Aralığı:** `battle.py` (L94)
+* **Dosya Adı ve Satır Aralığı:** 'battle.py' (L94)
 * **Hatanın Sebebi:** def enemy_turn(self, damage_multiplier=1) satırının sonunda : (iki nokta üst üste) eksik. Python'da fonksiyon, döngü ve koşul bloklarının başlangıcında bu karakterin bulunması zorunludur. Aksi halde SyntaxError oluşur.
 * **Nasıl Çözdünüz:** Fonksiyon imzasının sonuna : karakteri eklenerek blok başlatıldı.
 
 ---
 
 ### 2-Kapatılmamış Parantez Hatası (Unclosed Parenthesis)
-* **Dosya Adı ve Satır Aralığı:** 'character.py' (L78-L80)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L88-L91)
 * **Hatanın Sebebi:** print( fonksiyonu açılmış ancak kapanış parantezi ) yazılmamıştı. Bu durum Python’da syntax hatasına neden oluyordu.Python, parantez kapanana kadar kodun devam ettiğini sanır.
 * **Nasıl Çözdünüz:** 78. satır ve çevresindeki tüm parantez aç-kapat eşleşmeleri kontrol edilerek eksik olan ) karakteri eklendi.
 
 ---
 
 ### 3-Tamamlanmamış Karakter Dizisi (Unterminated String Literal)
-* **Dosya Adı ve Satır Aralığı:** 'character.py' (L78-L80)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L88-L91)
 * **Hatanın Sebebi:** f-string içerisinde açılan çift tırnak (") kapatılmadığı için Python string yapısını tamamlayamıyordu.Oyun arayüzü karakter bilgilerini basmaya çalıştığı anda sistem donar ve kapanır.
 * **Nasıl Çözdünüz:** f-string ifadesinin sonuna eksik olan " işareti eklenerek metin bloğu sonlandırıldı.
 
 ---
 
 ### 4-Komut Ayırma Hatası (Statements Separation Error)
-* **Dosya Adı ve Satır Aralığı:** 'character.py' (L78-L80)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L88-L91)
 * **Hatanın Sebebi:** Bir önceki hatadan (tırnağın kapanmaması) dolayı Python, 80. satırı  birbirine girmiş tek bir bozuk komut gibi algılıyor.Kod hiyerarşisi bozulduğu için Character sınıfı düzgün yüklenemez ve oyun daha başlatılamadan durur.
 * **Nasıl Çözdünüz:** Satır sonuna tırnak ve parantez kapatma ") eklenerek her bir komutun kendi satırında bağımsız çalışması sağlandı.
 
@@ -67,14 +67,14 @@
 ---
 
 ### 10- Seviye Atlama Sonrası XP Sıfırlama Mekanizması
-* **Dosya Adı ve Satır Aralığı:** 'character.py' (L54)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L62-L66)
 * **Hatanın Sebebi:** Karakter seviye atladığında mevcut XP puanı sıfırlanmıyordu. Bu durum, karakterin bir sonraki seviye eşiğine ulaştığı anda kazandığı her yeni puanda tekrar tekrar seviye atlama döngüsüne girmesine neden oluyordu.
 * **Nasıl Çözdünüz:** Seviye artışı gerçekleştikten sonra self.xp değeri 0'a eşitlenerek ilerleme sisteminin her seviye için baştan başlaması ve tutarlı çalışması sağlandı.
 
 ---
 
 ### 11- Statik Maksimum Can (Max HP) Havuzu Sorunu
-* **Dosya Adı ve Satır Aralığı:** 'character.py' (L55)
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L64-L67)
 * **Hatanın Sebebi:** Seviye atlama mekanizmasında karakterin hasarı artarken max_hp sabit kalıyordu. Bu durum, oyunun ilerleyen aşamalarında düşmanlar güçlenirken oyuncunun dayanıklılığının başlangıç seviyesinde kalmasına ve oyun dengesinin bozulmasına yol açıyordu.
 * **Nasıl Çözdünüz:** level_up fonksiyonuna max_hp artış protokolü eklendi. Karakterin seviye atladığı her seferinde maksimum canı belirli bir oranda artırılacak şekilde güncellendi.
 
@@ -139,14 +139,14 @@
 ---
 
 ### 20- Negatif Can (HP) Taşma Hatası
-* **Dosya Adı ve Satır Aralığı:** 'character.py' 
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L51-L53)
 * **Hatanın Sebebi:** self.current_hp -= damage satırı, karakter çok büyük bir darbe aldığında can değerinin eksilere (örneğin -15/100) düşmesine neden oluyordu. Kod patlamasa bile arayüzde kötü bir görüntü oluşturur.
 * **Nasıl Çözdünüz:** Hasar düşüldükten sonra self.current_hp = max(0, self.current_hp) kontrolü ile canın sıfırın altına inmesi engellendi.
 
 ---
 
 ### 21- Savunma Pozisyonunun Aktif Edilmemesi
-* **Dosya Adı ve Satır Aralığı:** 'character.py' 
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (l29-L32)
 * **Hatanın Sebebi:** defend fonksiyonu hala sadece ekrana yazı yazdırıyor. self.is_defending değişkeni True yapılmadığı için, take_damage fonksiyonundaki %50 az hasar alma mantığı asla tetiklenmiyor. Yani karakterin savunma seçmesi hala tamamen işlevsiz.
 * **Nasıl Çözdünüz:** defend fonksiyonunun gövdesine self.is_defending = True ataması eklenerek, oyuncu savunma yaptığında bu durumun arka planda da aktifleşmesi sağlandı.
 
@@ -217,14 +217,14 @@
 ---
 
 ### 31- Demir Kalkan Hasar Sönümleme ve Erken Sıfırlanma Açığı
-* **Dosya Adı ve Satır Aralığı:** 'character.py'
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L41-L49)
 * **Hatanın Sebebi:** Karakter aktif bir kalkana sahipken hasar aldığında, kalkanın canı gelen hasardan büyük olsa bile self.temp_shield = 0 komutuyla tek vuruşta tamamen yok oluyordu. Bu durum kalkanın ömrünü haksız yere bitiriyordu.
 * **Nasıl Çözdünüz:** Kalkan sönümleme matematiği revize edildi. Kalkan gücü doğrudan 0 yapılmak yerine, bloklanan hasar miktarı kadar eksiltilecek (self.temp_shield -= blocked) şekilde güncellendi.
 
 ---
 
 ### 32- Hasar Hesaplama Algoritmasında Öncelik ve Sıralama Hatası
-* **Dosya Adı ve Satır Aralığı:** 'character.py'
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L34*L49)
 * **Hatanın Sebebi:** Karakter aynı turda hem savunma pozisyonu alıp hem Demir Kalkan kullandığında, kalkan sönümleme hesabı savunma azaltmasından önce yapılıyordu. Bu durum kalkanın ham hasara maruz kalarak erkenden kırılmasına ve oyun dengesinin bozulmasına yol açıyordu.
 * **Nasıl Çözdünüz:** take_damage fonksiyonundaki işlem sırası revize edildi. Önce is_defending kontrolüyle gelen hasar yarıya düşürüldü, ardından süzülen net hasar kalkan havuzuna gönderilerek kılavuzdaki matematiksel model sağlandı.
 
@@ -273,7 +273,7 @@
 ---
 
 ### 39- Seviye Atlama Sonrası Sağlık Puanı Senkronizasyon Hatası
-* **Dosya Adı ve Satır Aralığı:** 'character.py'
+* **Dosya Adı ve Satır Aralığı:** 'character.py' (L61-L69)
 * **Hatanın Sebebi:** Karakter seviye atladığında max_hp artmasına rağmen, anlık sağlık puanı (current_hp) eski savaştan kalan hasarlı değerinde takılı kalıyordu. Savaş motoru döngüsündeki asenkron çakışmalar, oyuncunun yeni bölüme eksik canla başlamasına yol açarak oyun dengesini bozuyordu.
 * **Nasıl Çözdünüz:** Can atama satırı tam sayı (int) olarak kesinleştirildi (self.current_hp = int(self.max_hp)). Bellekteki verinin ezilmesi engellenerek seviye geçişlerinde sağlığın tamamen yenilenmesi sağlandı ve sisteme doğrulama logu eklendi.
 
