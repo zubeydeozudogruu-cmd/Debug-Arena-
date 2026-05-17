@@ -307,7 +307,9 @@ Satır Aralığı / Konum: play_chapter(self, chapter_num) fonksiyonunun içeris
 
 Diğer Geçtiği Yerler: Nesne üretilirken data.py içerisindeki harita isimlerini dinamik okuyabilmesi adına stage_name=chapter["name"] parametresi argüman olarak beslenmiştir.
 
+
 Bonus Özellik 2: Kritik Vuruş ve Kombo Sistemi (Critical Strike & Combo System)
+
 
 Nasıl Çalışıyor: Oyundaki durağan savaş döngüsüne ritim ve risk-ödül mekaniği katmak amacıyla eklenmiştir. Oyuncu arka arkaya "Saldır" eylemini seçtiğinde bir kombo sayacı tetiklenir. Her kombo adımı, oyuncunun bir sonraki turda Kritik Vuruş yapma ihtimalini %15 artırır (Maks %60). Kritik vuruş gerçekleştiğinde düşmana 2 kat ($damage \times 2$) hasar verilir. Oyuncunun savunma yapması, envanter kullanması veya kaçmaya çalışması durumunda odaklanması bozulur ve kombo sayacı sıfırlanır.
 
@@ -318,7 +320,9 @@ Satır Aralığı / Konum: __init__ constructor fonksiyonu içinde self.combo_co
 
 Diğer Geçtiği Yerler: Savaş döngüsü sonlandığında veya tur geçişlerinde sıfırlanması için lokal değişken olarak yönetilmektedir.
 
+
 Bonus Özellik 3: Rastgele Etkili Envanter Eşyası (Şanslı Zar / Gizemli Kutu)
+
 
 Nasıl Çalışıyor: Veri odaklı (Data-driven) ödül mimarisine uygun olarak tasarlanmıştır. Oyuncu seviye atladığında LEVEL_REWARDS sözlüğü üzerinden dinamik olarak bir Item nesnesi üretilir ve envantere eklenir. Oyuncu bu eşyayı kullandığında Item.use() metodu tetiklenir, rastgele bir zar ($1-3$) atılarak pozitif veya negatif etkiler (Anlık yüksek şifa, kalıcı hasar artışı veya büyü geri tepmesi hasarı) karakter nesnesi (player) üzerinde polimorfik bir yaklaşımla uygulanır.
 
