@@ -272,10 +272,10 @@
 
 ---
 
-### 3- [Hatanın Konusu]
-* **Dosya Adı ve Satır Aralığı:** 
-* **Hatanın Sebebi:** 
-* **Nasıl Çözdünüz:** 
+### 39- Seviye Atlama Sonrası Sağlık Puanı Senkronizasyon Hatası
+* **Dosya Adı ve Satır Aralığı:** 'character.py'
+* **Hatanın Sebebi:** Karakter seviye atladığında max_hp artmasına rağmen, anlık sağlık puanı (current_hp) eski savaştan kalan hasarlı değerinde takılı kalıyordu. Savaş motoru döngüsündeki asenkron çakışmalar, oyuncunun yeni bölüme eksik canla başlamasına yol açarak oyun dengesini bozuyordu.
+* **Nasıl Çözdünüz:** Can atama satırı tam sayı (int) olarak kesinleştirildi (self.current_hp = int(self.max_hp)). Bellekteki verinin ezilmesi engellenerek seviye geçişlerinde sağlığın tamamen yenilenmesi sağlandı ve sisteme doğrulama logu eklendi.
 
 ---
 
@@ -293,3 +293,48 @@
 
 ---
 
+
+🌟 EKLENEN BONUS ÖZELLİKLER 
+
+Bonus Özellik 1: Çevresel Element Avantajı (Environmental Stage Passive System)
+
+Nasıl Çalışıyor: Oyundaki statik ilerleyiş yapısını kırmak ve taktiksel derinlik katmak amacıyla harita tabanlı pasif çevre mekanikleri entegre edilmiştir. Savaş motoru (Battle), başlatıldığı haritanın string verisini (stage_name) analiz ederek oyuncuya o bölgeye özgü şu dinamik avantajları sağlar:
+
+Bölüm 1 (Karanlık Orman): Yoğun bitki örtüsü ve gölgeler sayesinde Savun eylemi gelen düşman hasarını standart %50 yerine %65 oranında sönümler (Oyuncu sadece %35 hasar alır).
+Bölüm 2 (Karanlık Mağara): Dar alandaki akustik yankı etkisiyle, oyuncunun saldırı esnasında çıkardığı rastgele bonus hasar zarı 2 kat efektif vurur.
+Bölüm 3 (Zehirli Bataklık): Ortamdaki asidik gazların etkisiyle oyuncunun her normal saldırısına +2 ekstra zehir hasarı kalıcı olarak eklenir.
+Bölüm 4 (Lanetli Kale): Kalenin antik savunma büyüleri sayesinde oyuncu savaşa doğrudan +3 Geçici Kalkan (temp_shield) elde ederek başlar ve ilk darbeleri canı gitmeden absorbe eder.
+Bölüm 5 (Karanlık Kule): Final kulesinin yoğun büyü akımı, oyuncunun vuruşlarına +4 ekstra kaos hasarı ekleyerek hasar sınırlarını zorlar.
+
+Dosya ve Konum Bilgisi:
+
+Mevcut Dosya ise: * Dosya Adı: battle.py
+* Satır Aralığı / Konum: * __init__ constructor fonksiyonu içerisine stage_name="" parametresi eklenmiştir.
+* start_battle() metodu içerisinde while döngüsünün hemen girişine Bölüm 4 (Lanetli Kale) başlangıç kalkanı kontrolü eklenmiştir.
+* player_turn() metodu içerisinde choice == "1" (Saldırı) bloğunun altına Bölüm 2, 3 ve 5'in saldırı/hasar şart ifadeleri (if/elif) entegre edilmiştir.
+* enemy_turn() metodu içerisinde if self.player.is_defending: bloğunun altına Bölüm 1 (Karanlık Orman) için özel hasar azaltma formülü eklenmiştir.
+* Diğer Geçtiği Yerler: Sınıf içi tüm lokal metotlarda harita kontrolü için self.stage_name olarak geçmektedir.
+
+Dosya Adı: game.py 
+
+Satır Aralığı / Konum: play_chapter(self, chapter_num) fonksiyonunun içerisinde, döngü içinde savaşın tetiklendiği battle = Battle(self.player, enemy) satırı güncellenmiştir.
+
+Diğer Geçtiği Yerler: Nesne üretilirken data.py içerisindeki harita isimlerini dinamik okuyabilmesi adına stage_name=chapter["name"] parametresi argüman olarak beslenmiştir.
+
+Bonus Özellik 2: Kritik Vuruş ve Kombo Sistemi (Critical Strike & Combo System)
+
+Nasıl Çalışıyor: Oyundaki durağan savaş döngüsüne ritim ve risk-ödül mekaniği katmak amacıyla eklenmiştir. Oyuncu arka arkaya "Saldır" eylemini seçtiğinde bir kombo sayacı tetiklenir. Her kombo adımı, oyuncunun bir sonraki turda Kritik Vuruş yapma ihtimalini %15 artırır (Maks %60). Kritik vuruş gerçekleştiğinde düşmana 2 kat ($damage \times 2$) hasar verilir. Oyuncunun savunma yapması, envanter kullanması veya kaçmaya çalışması durumunda odaklanması bozulur ve kombo sayacı sıfırlanır.
+
+Dosya ve Konum Bilgisi:
+
+Mevcut Dosya ise: * Dosya Adı: battle.py 
+Satır Aralığı / Konum: __init__ constructor fonksiyonu içinde self.combo_count değişkeni tanımlanmıştır. player_turn() metodu içerisinde oyuncunun eylem seçimlerine göre (choice == "1" ise kombo artırımı ve şans hesabı, diğer eylemlerde ise sıfırlama mantığı) entegre edilmiştir.
+Diğer Geçtiği Yerler: Savaş döngüsü sonlandığında veya tur geçişlerinde sıfırlanması için lokal değişken olarak yönetilmektedir.
+
+Bonus Özellik 3: Rastgele Etkili Envanter Eşyası (Şanslı Zar / Gizemli Kutu)
+
+Nasıl Çalışıyor: Veri odaklı (Data-driven) ödül mimarisine uygun olarak tasarlanmıştır. Oyuncu seviye atladığında LEVEL_REWARDS sözlüğü üzerinden dinamik olarak bir Item nesnesi üretilir ve envantere eklenir. Oyuncu bu eşyayı kullandığında Item.use() metodu tetiklenir, rastgele bir zar ($1-3$) atılarak pozitif veya negatif etkiler (Anlık yüksek şifa, kalıcı hasar artışı veya büyü geri tepmesi hasarı) karakter nesnesi (player) üzerinde polimorfik bir yaklaşımla uygulanır.
+
+Dosya ve Konum Bilgisi:Dosya Adı: data.py ve game/item.py
+
+Satır Aralığı / Konum: LEVEL_REWARDS veri yapısına yeni eşya tanımı eklenmiş, Item sınıfı içerisindeki use() fonksiyonu spesifik eşya ismi kontrolü (self.name == "Şanslı Zar") ile genişletilmiştir.
