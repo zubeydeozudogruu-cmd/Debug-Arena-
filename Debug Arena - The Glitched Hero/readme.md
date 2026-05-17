@@ -326,6 +326,8 @@ Bonus Özellik 3: Rastgele Etkili Envanter Eşyası (Şanslı Zar / Gizemli Kutu
 
 Nasıl Çalışıyor: Veri odaklı (Data-driven) ödül mimarisine uygun olarak tasarlanmıştır. Oyuncu seviye atladığında LEVEL_REWARDS sözlüğü üzerinden dinamik olarak bir Item nesnesi üretilir ve envantere eklenir. Oyuncu bu eşyayı kullandığında Item.use() metodu tetiklenir, rastgele bir zar ($1-3$) atılarak pozitif veya negatif etkiler (Anlık yüksek şifa, kalıcı hasar artışı veya büyü geri tepmesi hasarı) karakter nesnesi (player) üzerinde polimorfik bir yaklaşımla uygulanır.
 
-Dosya ve Konum Bilgisi:Dosya Adı: data.py ve game/item.py
+Dosya ve Konum Bilgisi:
+
+Dosya Adı: data.py ve item.py
 
 Satır Aralığı / Konum: LEVEL_REWARDS veri yapısına yeni eşya tanımı eklenmiş, Item sınıfı içerisindeki use() fonksiyonu spesifik eşya ismi kontrolü (self.name == "Şanslı Zar") ile genişletilmiştir.
