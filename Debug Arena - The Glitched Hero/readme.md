@@ -311,6 +311,7 @@ Dosya ve Konum Bilgisi:
 
 Mevcut Dosya ise: * Dosya Adı: battle.py 
 Satır Aralığı / Konum: __init__ constructor fonksiyonu içinde self.combo_count değişkeni tanımlanmıştır. player_turn() metodu içerisinde oyuncunun eylem seçimlerine göre (choice == "1" ise kombo artırımı ve şans hesabı, diğer eylemlerde ise sıfırlama mantığı) entegre edilmiştir.
+
 Diğer Geçtiği Yerler: Savaş döngüsü sonlandığında veya tur geçişlerinde sıfırlanması için lokal değişken olarak yönetilmektedir.
 
 Bonus Özellik 3: Rastgele Etkili Envanter Eşyası (Şanslı Zar / Gizemli Kutu)
