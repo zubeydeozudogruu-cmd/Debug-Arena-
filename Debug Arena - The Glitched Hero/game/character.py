@@ -27,20 +27,30 @@ class Character:
         
 
     def defend(self):
+        # KILAVUZ UYUMU: Hatalı hasar hesaplama tuzağı kaldırıldı, sadece savunma durumu aktif edildi.
         print(f"  {self.name} savunma pozisyonu aldı! Bu tur %50 az hasar alacak.")
-
+        self.is_defending = True
+            
     def take_damage(self, damage):
+        # Önce oyuncu savunma yapıyor mu kontrol et, yapıyorsa hasarı yarıya düşür
+        if self.is_defending:
+            damage = damage // 2
+            print(f"  [SAVUNMA] {self.name} gelen hasarı %50 sönümledi!")
+            self.is_defending = False  # Savunma bittiği için bayrağı indiriyoruz
+
+        # Kalkan kontrolü
         if self.temp_shield > 0:
             blocked = min(self.temp_shield, damage)
             damage -= blocked
-            self.temp_shield = 0
+            self.temp_shield -= blocked
             print(f"  Kalkan {blocked} hasarı bloke etti!")
-        if self.is_defending:
-            damage = damage // 2
-            self.is_defending = False
+            
+            if self.temp_shield == 0:
+                print("  [BİLGİ] Demir Kalkan parçalandı!")
+        
         self.current_hp -= damage
+        self.current_hp = max(0, self.current_hp)
         return damage
-
     # XP kazanma
     def gain_xp(self, amount):
         self.xp += amount
@@ -55,7 +65,8 @@ class Character:
         self.xp = 0
         self.max_hp += 20
         self.xp_needed = XP_THRESHOLDS.get(self.level, 500)
-        self.current_hp = self.max_hp
+        self.current_hp = int(self.max_hp)
+        print(f"  [SİSTEM] Sağlığınız tamamen yenilendi! -> HP: {self.current_hp}/{self.max_hp}")
         self.damage += 2
         print(f"\n  *** SEVİYE ATLADI! {self.name} artık Level {self.level}! ***")
         print(f"  Max HP: {self.max_hp} | Hasar: {self.damage}")

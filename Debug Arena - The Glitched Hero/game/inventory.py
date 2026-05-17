@@ -19,10 +19,11 @@ class Inventory:
 
     # Seviye atladıkça envanter slotunu açmak için fonksiyon
     def expand_slot(self):
-        # TODO: Seviye atlama ödülü olarak envanterin maksimum kapasitesini (max_slots) 1 birim artır.
-        pass  
+        self.max_slots += 1
+        print(f"  [SİSTEM] Envanter kapasitesi genişletildi! Yeni Kapasite: {self.max_slots} slot.")
 
     def show(self):
+        self.remove_empty() 
         print(f"\n  Envanter  ({len(self.items)}/{self.max_slots} slot):")
         if not self.items:
             print("  [Boş]")
@@ -36,4 +37,5 @@ class Inventory:
 
     # Envanterde kullanılabilir item olup olmadığını kontrol eden fonksiyon
     def has_items(self):
-        return True  
+        self.remove_empty()
+        return len(self.items) > 0

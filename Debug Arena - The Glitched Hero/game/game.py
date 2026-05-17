@@ -1,6 +1,9 @@
 # TODO: Sınıf etkileşimleri için gerekli olan içe aktarma (import) işlemlerini tamamla
 import random
-
+from .character import Character
+from .enemy import Enemy
+from .battle import Battle 
+from .data import CHAPTERS
 class Game:
     def __init__(self):
         self.player = None
@@ -45,7 +48,7 @@ class Game:
                 print(f"\n  {enemy.name} seni takip etti ve geri döndü!")
                 print(f"  ({enemy.name} HP: {enemy.current_hp}/{enemy.max_hp})")
 
-            battle = Battle(self.player, enemy)
+            battle = Battle(self.player, enemy,stage_name=chapter["name"])
             result = battle.start_battle()
 
             if result == "lose":
@@ -54,13 +57,16 @@ class Game:
             if result == "fled":
                 # TODO: Oyuncu bir düşmandan kaçtığında, o düşmanın mevcut can değerini (current HP) koru; canını tamamlama.
                 # Düşmanı mevcut HP'siyle kuyruğa ekle
-                enemy.current_hp = enemy.max_hp  
+                #HATA: enemy.current_hp = enemy.max_hp  
                 fled_enemies.append(enemy)
                 print(f"  Kaçtın! Ama {enemy.name} peşini bırakmayacak...")
+                # Üst üste kaçışlarda terminalin saniyede bin kez savaşı tetikleyip kilitlenmesini engellemek,
+                # oyuncuya nefes aldırmak için araya bu input() eklendi.
+                input("  [Canavardan uzaklaşmak için Enter'a bas...]\n")
                 continue
 
             if not self.player.is_alive():
-                return "lose"
+             return "lose"
 
         print(f"\n  Bölüm {chapter_num} tamamlandı! İyi iş!")
         return "win"
