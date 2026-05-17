@@ -1,2 +1,2 @@
 # yarismalar
-TYZT çatısı altında düzenlenen tüm yarışmaların repoları
+Debug Arena -The Glitched Hero debug yarışması kapsamında hazırlanan repo
