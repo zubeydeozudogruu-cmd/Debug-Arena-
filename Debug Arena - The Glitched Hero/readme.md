@@ -1,7 +1,6 @@
 # DEBUG ARENA YARIŞMASI: The Glitched Hero
 
 ## 🛠️ ÇÖZÜLEN HATALAR FORMU
-> *Lütfen bulduğunuz ve düzelttiğiniz hataları aşağıdaki şablona uygun olarak ekleyiniz.*
 
 ### 1- Eksik Sözdizimi Karakteri (Missing Colon)
 * **Dosya Adı ve Satır Aralığı:** 'battle.py' (L152-L153)
